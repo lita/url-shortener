@@ -7,10 +7,8 @@ from url_shortener import UrlManager
 @app.route('/')
 @app.route('/index')
 def index():
-    user = { 'nickname': 'Lita' } # fake user
     return render_template("index.html",
-        title = "Lita's URL Shortener",
-        user = user)
+        title = "Lita's URL Shortener")
 
 @app.route('/urlForm', methods = ['GET', 'POST'])
 def urlForm():
@@ -19,7 +17,9 @@ def urlForm():
         result = UrlManager.processUrl(form.url.data)
         if result:
             flash('URL Accepted!')
-            flash('Shorten Url: http://localhost:5000/' + str(result))
+            flash(('Shorten Url: <strong> http://localhost:5000/' 
+                    + str(result) 
+                    + '</strong>'))
             return redirect('/index')
         else:
             flash('Url is not valid.')
@@ -27,7 +27,8 @@ def urlForm():
         title = 'Shorten Your URL',
         form = form)
 
-@app.route('/<int:key>')
+
+@app.route('/<key>')
 def goToNewSite(key):
     url =  UrlManager.getUrl(key)
     return redirect(url)

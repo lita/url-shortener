@@ -5,9 +5,8 @@
 <form action="" method="post" name="urlForm">
     {{form.hidden_tag()}}
     <p>
-        Please enter your a url:<br>
-        {{form.url(size=80)}}<br>
-        <input type="submit" value="Shorten!"><br>
+        Please enter your url: {{form.url(size=80)}}<br>
+        <input class='button' type="submit" value="Shorten!"><br>
     </p>
 </form>
 {% endblock %}
