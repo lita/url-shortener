@@ -17,7 +17,9 @@ def urlForm():
         result = UrlManager.processUrl(form.url.data)
         if result:
             flash('URL Accepted!')
-            flash(('Shorten Url: <strong> http://localhost:5000/' 
+            flash(('Shorten Url: <strong> http://' 
+                    + app.config['HOSTNAME'] 
+                    + '/' 
                     + str(result) 
                     + '</strong>'))
             return redirect('/index')
