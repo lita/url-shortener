@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <link href="/static/css/main.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     {% if title %}
+     <title>{{title}}</title>
+    {% else %}
+    <title>URL Shortener</title>
+    {% endif %}
+  </head>
+  <body>
+
+
+    <a href="/index">Home</a>
+    <hr class='dotted'>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <div>{{ message|safe }} <div>
+    {% endfor %}
+    <br>
+    {% endif %}
+    {% endwith %}
+
+<h2> Admin Page </h2>
+<style>
+
+.land {
+  fill: #ccc;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+}
+
+</style>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="/static/js/maps.js"></script>
+<script type="text/javascript">
+  var locations = {{ locations }}
+</script>
+
+  </body>
+</html>

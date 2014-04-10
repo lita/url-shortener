@@ -1,3 +1,7 @@
+import hashlib
+import base64
+import pickle
+
 import requests
 from redis import Redis
 
@@ -51,15 +55,30 @@ class UrlManager(object):
         if result.status_code >= 400:
             return False
         count = int(count) + 1
-        cls.redis.set(count, url)
+        
         cls.redis.set('count', count)
         key = cls.generateKey(count)
-        return key
+        adminKey = cls.generateAdminKey(key)
+        cls.redis.set(count, pickle.dumps((url, adminKey)))
+        return key, adminKey
 
     @classmethod
-    def getUrl(cls, key):
+    def getUrl(cls, key, request):
         id = cls.convertToNum(key)
-        return cls.redis.get(id)
+        url, adminKey = pickle.loads(cls.redis.get(id))
+        ip = request.remote_addr
+        if cls.redis.exists(adminKey):
+            ipHisotry = pickle.loads(redis.get(adminKey))
+            ipHisotry.append(ip)
+        else:
+            ipHisotry = [ip]
+        cls.redis.set(adminKey, pickle.dumps(ipHisotry))
+
+        return url
+
+    @classmethod
+    def getAdminData(cls, adminKey):
+        return pickle.loads(cls.redis.get(adminKey))
 
     @classmethod
     def convertToNum(cls, key):
@@ -85,3 +104,10 @@ class UrlManager(object):
             digits.append(cls.numToChar[remainder])
             id = id/cls.base
         return ''.join(digits)
+
+    @classmethod
+    def generateAdminKey(cls, key):
+        hash_key = base64.b64encode(hashlib.sha1(key).digest())
+        return hash_key
+
+

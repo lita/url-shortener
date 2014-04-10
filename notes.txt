@@ -1,0 +1,4 @@
+Apache Maintenance:
+sudo a2dissite default
+sudo a2ensite sitename.com
+sudo /etc/init.d/apache2 restart

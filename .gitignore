@@ -17,3 +17,4 @@ flask/
 .Trashes
 ehthumbs.db
 Thumbs.db
+.elasticbeanstalk/
